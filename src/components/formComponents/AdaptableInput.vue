@@ -23,7 +23,9 @@ export default {
        this.localValue = this.value
   },
   props: {
-    value,
+    value : {
+        type: [String, Number, Array]
+    },
     fieldType : {
         type: String,
         default: "string" 
