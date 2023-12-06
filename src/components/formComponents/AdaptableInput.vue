@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <label v-if="label" :for="id">{{ label }}</label>
-        <input v-if="fieldType == 'string'" :id="id" type="text">
-        <input v-if="fieldType == 'number'" :id="id" type="number">
-        <select v-if="fieldType == 'select'" :name="name" :id="id">
+    <div class="form-group">
+        <label v-if="label" :for="id" class="form-label">{{ label }}</label>
+        <input v-if="fieldType == 'string'" :id="id" type="text" class="form-control">
+        <input v-if="fieldType == 'number'" :id="id" type="number" class="form-control">
+        <select v-if="fieldType == 'select'" :name="name" :id="id" class="col-12">
             <option v-for="option in options" :key="option[optionsValueField]" :value="option[optionsValueField]">
                 {{makeUpperCase(option[optionsTextField])}}
             </option>
