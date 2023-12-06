@@ -14,4 +14,11 @@ describe('<AdaptableInput />', () => {
       cy.get("input[type=number]")
     })
   })
+
+  it('Can show label', () => {
+    // see: https://on.cypress.io/mounting-vue
+    cy.mount(AdaptableInput, {propsData : {label :'Text input field'}}).then(() => {
+      cy.get("input[type=text]")
+    })
+  })
 })
