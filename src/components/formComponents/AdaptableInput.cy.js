@@ -15,6 +15,16 @@ describe('<AdaptableInput />', () => {
     })
   })
 
+  it('Can act as select input', () => {
+    // see: https://on.cypress.io/mounting-vue
+    cy.mount(AdaptableInput, {propsData : {fieldType :'select', options: 
+    [
+      {id : 0, name : 'First option'}
+    ]}}).then(() => {
+      cy.get("select")
+    })
+  })
+
   it('Can show label', () => {
     // see: https://on.cypress.io/mounting-vue
     cy.mount(AdaptableInput, {propsData : {label :'Text input field'}}).then(() => {
