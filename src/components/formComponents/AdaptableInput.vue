@@ -1,8 +1,8 @@
 <template>
     <div class="form-group">
         <label v-if="label" :for="id" class="form-label">{{ label }}</label>
-        <input v-if="fieldType == 'string'" v-model="localValue" :id="id" type="text" class="form-control">
-        <input v-if="fieldType == 'number'" v-model="localValue" :id="id" type="number" class="form-control">
+        <input v-if="fieldType == 'string'" v-model="localValue" :name="name" :id="id" type="text" class="form-control">
+        <input v-if="fieldType == 'number'" v-model="localValue" :name="name" :id="id" type="number" class="form-control">
         <select v-if="fieldType == 'select'" v-model="localValue" :name="name" :id="id" class="col-12">
             <option v-for="option in options" :key="option[optionsValueField]" :value="option[optionsValueField]">
                 {{makeUpperCase(option[optionsTextField])}}
