@@ -8,6 +8,8 @@
                 {{makeUpperCase(option[optionsTextField])}}
             </option>
         </select>
+        <p v-if="errorMessage" class="alert alert-danger py-2 my-1">{{ errorMessage }}</p>
+        <p v-if="ShowHint">{{ hint }}</p>
     </div>
 </template>
 <script>
@@ -38,6 +40,12 @@ export default {
         type: String,
         default: "field"
     },
+    hint : {
+            Type : String
+    },
+    errorMessage : {
+        Type : String
+    },
     options : {
         type: Array,
         required : false
@@ -54,6 +62,11 @@ export default {
   methods: {
         makeUpperCase(string){
             return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+   },
+   computed : {
+        ShowHint(){
+            return this.hint && !this.errorMessage;
         }
    },
    watch: {
