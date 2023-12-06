@@ -18,7 +18,7 @@ describe('<AdaptableInput />', () => {
   it('Can show label', () => {
     // see: https://on.cypress.io/mounting-vue
     cy.mount(AdaptableInput, {propsData : {label :'Text input field'}}).then(() => {
-      cy.get("input[type=text]")
+      cy.contains("Text input field").should("be.visible");
     })
   })
 })
