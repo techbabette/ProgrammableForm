@@ -4,21 +4,19 @@ describe('<ProgrammableForm />', () => {
   it('Catches value changes', () => {
     // see: https://on.cypress.io/mounting-vue
     cy.mount(ProgrammableForm, {propsData : {
-      inputs : [
-        {
+      inputs : {
+        firstField : {
           props : {
-            name : "firstField",
             label : "First field"
           }
         },
-        {
+        secondField : {
           props : {
-            name : "secondField",
             label : "Second field",
             fieldType : "number"
           }
         }
-      ]
+      }
     }}).then(() => {
       cy.get("[name=secondField]").type("5");
     })

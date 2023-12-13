@@ -1,6 +1,6 @@
 <template>
     <form action="">
-        <AdaptableInput v-for="input in inputs" v-bind="input.props" v-model="formData[input.props.name]"/>
+        <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-model="formData[input]"/>
     </form>
 </template>
 <script>
@@ -15,14 +15,22 @@ export default {
     },
     props: {
         inputs: {
-            Type: Array,
+            Type: Object,
             required: true
         }
     },
+    methods: {
+        checkValue(){
+
+        },
+        checkValues(){
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+   },
     watch : {
         formData : function(){
             console.log(this.formData);
         }
-    }
+    },
 }
 </script>
