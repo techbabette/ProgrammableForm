@@ -1,6 +1,6 @@
 <template>
     <form action="">
-        <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-model="formData[input]"/>
+        <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-bind:errorMessage="errorMessages[input]" v-model="formData[input]"/>
     </form>
 </template>
 <script>
@@ -11,6 +11,7 @@ export default {
     data(){
         return {
             formData : {},
+            errorMessages : {}
         }
     },
     props: {
@@ -21,22 +22,32 @@ export default {
     },
     methods: {
         checkValue : function(fieldToCheck){
-            if(!inputs[input].hasOwn("checkFunction")){
+            if(!Object.hasOwn(this.inputs[fieldToCheck], "checkFunction")){
                 return true;
             }
-            let result = inputs[fieldToCheck].checkFunction(this.formData[fieldToCheck]);
+            let result = this.inputs[fieldToCheck].checkFunction(this.formData[fieldToCheck]);
 
-            return result;
+            this.errorMessages[fieldToCheck] = result.errorMessage;
+
+            return result.success;
         },
         checkAllValues : function(){
-            for(let input of Object.keys(inputs)){
-                checkValue(input);
+            let errorExists = false;
+            for(let input of Object.keys(this.inputs)){
+                if(!this.checkValue(input)){
+                    errorExists = true;
+                };
             }
+            return errorExists;
         }
    },
     watch : {
-        formData : function(){
-            console.log(this.formData);
+        formData : {
+            handler : function(){
+                console.log(this.formData);
+                this.checkAllValues();
+            },
+            deep : true
         }
     },
 }
