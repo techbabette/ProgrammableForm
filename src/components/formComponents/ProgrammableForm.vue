@@ -20,11 +20,18 @@ export default {
         }
     },
     methods: {
-        checkValue(){
+        checkValue : function(fieldToCheck){
+            if(!inputs[input].hasOwn("checkFunction")){
+                return true;
+            }
+            let result = inputs[fieldToCheck].checkFunction(this.formData[fieldToCheck]);
 
+            return result;
         },
-        checkValues(){
-            return string.charAt(0).toUpperCase() + string.slice(1);
+        checkAllValues : function(){
+            for(let input of Object.keys(inputs)){
+                checkValue(input);
+            }
         }
    },
     watch : {
