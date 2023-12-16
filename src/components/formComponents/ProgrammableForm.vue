@@ -1,6 +1,10 @@
 <template>
     <form action="">
         <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-bind:errorMessage="errorMessages[input]" v-model="formData[input]"/>
+        <div class="formButtonArea">
+            <button v-if="closeFormButton" type="button" :value="closeFormButton.name" :class="closeFormButton.class"> {{ closeFormButton.text }}</button>
+            <button v-if="submitFormButton" type="submit" :value="submitFormButton.name" :class="submitFormButton.class"> {{ submitFormButton.text }}</button>
+        </div>
     </form>
 </template>
 <script>
@@ -18,6 +22,18 @@ export default {
         inputs: {
             Type: Object,
             required: true
+        },
+        submitFormButton : {
+            Type: [Object,Boolean],
+            required: false,
+            default : {
+                name : "submitForm",
+                text : "Submit form"
+            }
+        },
+        closeFormButton : {
+            Type: [Object,Boolean],
+            default : false
         }
     },
     methods: {

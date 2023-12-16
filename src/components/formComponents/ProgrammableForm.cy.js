@@ -47,4 +47,32 @@ describe('<ProgrammableForm />', () => {
       cy.contains("First field cannot be empty").should("be.visible");
     })
   })
+  it.only("Shows close button when passed as prop", () => {
+    cy.mount(ProgrammableForm, {propsData : {
+      inputs : {
+        firstField : {
+          props : {
+            label : "First field",
+          },
+          checkFunction : function(value){
+            let result = {};
+            result.errorMessage = "";
+            result.success = true;
+            
+            if(!value || value === ""){
+              result.errorMessage = "First field cannot be empty";
+              result.success = false;
+            }
+
+            return result;
+          }
+        },
+      },
+      closeFormButton : {
+        name : 'closeForm',
+        text : 'Close form',
+        class : 'col-12'
+      }
+    }})
+  })
 })
