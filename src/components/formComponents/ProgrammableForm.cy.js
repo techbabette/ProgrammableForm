@@ -43,7 +43,7 @@ describe('<ProgrammableForm />', () => {
         },
       }
     }}).then(() => {
-      cy.get("[name=firstField]").type("a{backspace}");
+      cy.get("[name=firstField]").type("a{backspace}").blur();
       cy.contains("First field cannot be empty").should("be.visible");
     })
   })
@@ -77,7 +77,7 @@ describe('<ProgrammableForm />', () => {
       cy.get("[name=closeForm]").should("have.class", "col-12");
     })
   })
-  it.only("Can attempt to submit form", () => {
+  it("Can attempt to submit form", () => {
     cy.mount(ProgrammableForm, {propsData : {
       inputs : {
         firstField : {

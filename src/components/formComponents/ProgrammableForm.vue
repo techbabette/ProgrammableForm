@@ -1,9 +1,11 @@
 <template>
     <form action="">
-        <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-bind:errorMessage="errorMessages[input]" v-model="formData[input]"/>
+        <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props"
+        v-bind:name="input" v-bind:errorMessage="errorMessages[input]" v-model="formData[input]"
+        @blur="checkValue"/>
         <div class="formButtonArea">
             <button v-if="closeFormButton" type="button" :name="closeFormButton.name"
-            :class="closeFormButton.class" @click="closeFormButton.onClick"> {{ closeFormButton.text }}</button>
+            :class="closeFormButton.class" @click="closeFormButton.onClick ?? function(){}"> {{ closeFormButton.text }}</button>
             <button v-if="submitFormButton" type="submit" :name="submitFormButton.name"
             :class="submitFormButton.class" @click.prevent="checkAllValuesAndSubmit()"> {{ submitFormButton.text }}</button>
         </div>
@@ -39,11 +41,6 @@ export default {
         },
         onValidForm : {
             Type : Function,
-            required : false,
-            default : function(data){
-                console.log("Hello world, the data is below");
-                console.log(data);
-            }
         },
         onSuccess : {
             Type : Function,
@@ -57,7 +54,7 @@ export default {
             }
             let result = this.inputs[fieldToCheck].checkFunction(this.formData[fieldToCheck]);
 
-            this.errorMessages[fieldToCheck] = result.errorMessage;
+            this.$set(this.errorMessages, fieldToCheck, result.errorMessage);
 
             return result.success;
         },
@@ -71,6 +68,10 @@ export default {
             return errorExists;
         },
         checkAllValuesAndSubmit : async function(){
+            if(!this.onValidForm){
+                return;
+            }
+
             if(!this.checkAllValues){
                 return;
             }
@@ -88,13 +89,6 @@ export default {
         }
    },
     watch : {
-        formData : {
-            handler : function(){
-                console.log(this.formData);
-                this.checkAllValues();
-            },
-            deep : true
-        }
     },
 }
 </script>

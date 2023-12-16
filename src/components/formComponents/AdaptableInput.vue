@@ -1,8 +1,10 @@
 <template>
     <div class="form-group">
         <label v-if="label" :for="id" class="form-label">{{ label }}</label>
-        <input v-if="fieldType == 'string'" v-model="localValue" :name="name" :id="id" type="text" class="form-control">
-        <input v-if="fieldType == 'number'" v-model="localValue" :name="name" :id="id" type="number" class="form-control">
+        <input v-if="fieldType == 'string'" v-model="localValue" 
+        :name="name" :id="id" type="text" class="form-control" @blur="emitNameOnBlur">
+        <input v-if="fieldType == 'number'" v-model="localValue" 
+        :name="name" :id="id" type="number" class="form-control" @blur="emitNameOnBlur">
         <select v-if="fieldType == 'select'" v-model="localValue" :name="name" :id="id" class="col-12">
             <option v-for="option in options" :key="option[optionsValueField]" :value="option[optionsValueField]">
                 {{makeUpperCase(option[optionsTextField])}}
@@ -41,7 +43,7 @@ export default {
         default: "field"
     },
     hint : {
-            Type : String
+        Type : String
     },
     errorMessage : {
         Type : String
@@ -57,11 +59,25 @@ export default {
     optionsTextField : {
         type: String,
         default: "name"
+    },
+    checkOnBlur : {
+        Type : Boolean,
+        default : true
     }
   },
   methods: {
         makeUpperCase(string){
             return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        emitName(){
+            this.$emit("blur", this.name);
+        },
+        emitNameOnBlur(){
+            if(!this.checkOnBlur){
+                return;
+            }
+
+            this.emitName();
         }
    },
    computed : {
