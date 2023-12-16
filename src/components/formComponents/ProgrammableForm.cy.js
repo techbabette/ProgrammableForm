@@ -21,7 +21,7 @@ describe('<ProgrammableForm />', () => {
       cy.get("[name=secondField]").type("5");
     })
   })
-  it.only("Shows error when value isn't valid", () => {
+  it("Shows error when value isn't valid", () => {
     cy.mount(ProgrammableForm, {propsData : {
       inputs : {
         firstField : {
@@ -33,7 +33,7 @@ describe('<ProgrammableForm />', () => {
             result.errorMessage = "";
             result.success = true;
             
-            if(!value || value === ""){
+            if(!value){
               result.errorMessage = "First field cannot be empty";
               result.success = false;
             }
@@ -47,7 +47,7 @@ describe('<ProgrammableForm />', () => {
       cy.contains("First field cannot be empty").should("be.visible");
     })
   })
-  it.only("Shows close button when passed as prop", () => {
+  it("Shows close button when passed as prop", () => {
     cy.mount(ProgrammableForm, {propsData : {
       inputs : {
         firstField : {
@@ -59,7 +59,7 @@ describe('<ProgrammableForm />', () => {
             result.errorMessage = "";
             result.success = true;
             
-            if(!value || value === ""){
+            if(!value){
               result.errorMessage = "First field cannot be empty";
               result.success = false;
             }
@@ -73,6 +73,40 @@ describe('<ProgrammableForm />', () => {
         text : 'Close form',
         class : 'col-12'
       }
-    }})
+    }}).then(() => {
+      cy.get("[name=closeForm]").should("have.class", "col-12");
+    })
+  })
+  it.only("Can attempt to submit form", () => {
+    cy.mount(ProgrammableForm, {propsData : {
+      inputs : {
+        firstField : {
+          props : {
+            label : "First field",
+          },
+          checkFunction : function(value){
+            let result = {};
+            result.errorMessage = "";
+            result.success = true;
+            
+            if(!value){
+              result.errorMessage = "First field cannot be empty";
+              result.success = false;
+            }
+
+            return result;
+          }
+        },
+      },
+      onValidForm : function(data){
+        console.log("Form is valid!");
+        console.log(data);
+
+        return {errorMessages : {}, message : "Form is valid"}
+      }
+    }}).then(() => {
+      cy.get("[name=firstField]").type("a");
+      cy.get("[name=submitForm]").click();
+    })
   })
 })

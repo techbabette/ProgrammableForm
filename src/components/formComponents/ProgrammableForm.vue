@@ -2,8 +2,10 @@
     <form action="">
         <AdaptableInput v-for="input in Object.keys(inputs)" v-bind="inputs[input].props" v-bind:name="input" v-bind:errorMessage="errorMessages[input]" v-model="formData[input]"/>
         <div class="formButtonArea">
-            <button v-if="closeFormButton" type="button" :value="closeFormButton.name" :class="closeFormButton.class"> {{ closeFormButton.text }}</button>
-            <button v-if="submitFormButton" type="submit" :value="submitFormButton.name" :class="submitFormButton.class"> {{ submitFormButton.text }}</button>
+            <button v-if="closeFormButton" type="button" :name="closeFormButton.name"
+            :class="closeFormButton.class" @click="closeFormButton.onClick"> {{ closeFormButton.text }}</button>
+            <button v-if="submitFormButton" type="submit" :name="submitFormButton.name"
+            :class="submitFormButton.class" @click.prevent="checkAllValuesAndSubmit()"> {{ submitFormButton.text }}</button>
         </div>
     </form>
 </template>
@@ -28,12 +30,24 @@ export default {
             required: false,
             default : {
                 name : "submitForm",
-                text : "Submit form"
+                text : "Submit form",
             }
         },
         closeFormButton : {
             Type: [Object,Boolean],
             default : false
+        },
+        onValidForm : {
+            Type : Function,
+            required : false,
+            default : function(data){
+                console.log("Hello world, the data is below");
+                console.log(data);
+            }
+        },
+        onSuccess : {
+            Type : Function,
+            required : false
         }
     },
     methods: {
@@ -55,6 +69,22 @@ export default {
                 };
             }
             return errorExists;
+        },
+        checkAllValuesAndSubmit : async function(){
+            if(!this.checkAllValues){
+                return;
+            }
+
+            let result = await this.onValidForm(this.formData);
+
+            if(result.errorMessages){
+                this.errorMessages = result.errorMessages;
+                return;
+            }
+
+            if(this.onSuccess){
+                this.onSuccess(result);
+            }
         }
    },
     watch : {
